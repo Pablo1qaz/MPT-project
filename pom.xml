@@ -8,11 +8,11 @@
         <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.poleszczak</groupId>
+    <groupId>com.webapp</groupId>
     <artifactId>project</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>project</name>
-    <description>Pawel Oleszczak main project</description>
+    <description>main project</description>
     <url/>
     <licenses>
         <license/>

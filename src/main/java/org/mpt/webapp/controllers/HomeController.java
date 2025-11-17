@@ -11,4 +11,19 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping({"/planner"})
+    public String planner() {
+        return "planner";
+    }
+
+    @GetMapping({"/tasks"})
+    public String tasks() {
+        return "tasks";
+    }
+
+    @GetMapping({"/guests"})
+    public String guests() {
+        return "guests";
+    }
+
 }
