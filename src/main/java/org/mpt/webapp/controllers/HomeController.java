@@ -26,4 +26,17 @@ public class HomeController {
         return "guests";
     }
 
+    @GetMapping({"/tables"})
+    public String tables() {
+        return "tables";
+    }
+
+    @GetMapping({"/forum"})
+    public String forum() { return "forum"; }
+
+
+
+
+
+
 }
