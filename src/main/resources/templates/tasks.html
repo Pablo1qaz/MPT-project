@@ -1,72 +1,181 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Wedding with Class</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{style.css}">
+    <link rel="stylesheet" th:href="@{style.css}" href="style.css">
 </head>
 <style>
-    ul li{
-        list-style: none;
-        font-size: 17px;
-        padding: 12px 8px 12px 50px;
-        user-select: none;
+    body{
+        background: linear-gradient(135deg, lightskyblue, papayawhip);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+        margin-top: 20px;
+        max-width: 800px;
+    }
+    .todo-app {
+        background: #fff;
+        padding: 40px 30px 70px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .todo-app h2 {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        color: #002765;
+    }
+    .todo-app h2 img {
+        width: 30px;
+        margin-left: 10px;
+    }
+
+    /* --- NOWY PANEL DODAWANIA --- */
+    .add-task-container {
+        display: flex;
+        gap: 10px;
+        background: #edeef0;
+        border-radius: 30px;
+        padding: 10px 20px;
+        margin-bottom: 25px;
+        align-items: center;
+        flex-wrap: wrap; /* RWD */
+    }
+
+    /* Pole tekstowe */
+    input#input-box {
+        flex: 2;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 10px;
+        font-size: 16px;
+        min-width: 200px;
+    }
+
+    /* Lista wyboru etapu */
+    select#category-select {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 10px;
+        font-size: 15px;
+        color: #555;
+        border-left: 1px solid #ccc;
         cursor: pointer;
-        position: relative;
+        min-width: 120px;
     }
-    ul li::before{
-        content: '';
-        position: absolute;
-        height: 28px;
-        width: 28px;
-        border-radius: 50%;
-        background-size: cover;
-        background-position: center;
-        top: 12px;
-        left: 8px;
+
+    /* Przycisk dodawania */
+    button.add-btn {
+        border: none;
+        outline: none;
+        padding: 12px 30px;
+        background: #ff5945;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 40px;
+        font-weight: bold;
+        transition: 0.3s;
     }
-    ul li.checked::before{
+    button.add-btn:hover {
+        background: #e04835;
     }
+
+    /* --- LISTA ZADAŃ --- */
     ul#list-container {
         list-style-type: none;
         padding: 0;
     }
 
-    ul#list-container li {
+    ul li {
+        list-style: none;
+        font-size: 17px;
+        padding: 12px 45px 12px 50px; /* Więcej miejsca z prawej na X */
+        user-select: none;
         cursor: pointer;
-        padding: 8px 12px;
-        margin: 4px 0;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        transition: background-color 0.3s;
+        position: relative;
+        margin-bottom: 5px;
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        border-radius: 5px;
     }
 
-    ul#list-container li:hover {
-        background-color: #eee;
+    /* Ikona (kółko) */
+    ul li::before {
+        content: '';
+        position: absolute;
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        background-image: url(https://cdn-icons-png.flaticon.com/512/10622/10622664.png);
+        background-size: cover;
+        background-position: center;
+        top: 8px;
+        left: 8px;
     }
 
-    ul#list-container li.checked {
+    /* Zaznaczone zadanie */
+    ul li.checked {
         text-decoration: line-through;
-        color: gray;
+        color: #888;
+        background: #f9f9f9;
     }
+
+    ul li.checked::before {
+        background-image: url(https://cdn-icons-png.flaticon.com/512/190/190411.png);
+    }
+
+    /* Przycisk usuwania (X) */
+    ul li span.close-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        color: #555;
+        line-height: 28px;
+        text-align: center;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+    ul li span.close-btn:hover {
+        background: #ffe0dd;
+        color: #ff5945;
+    }
+
+    /* Nagłówki */
     .stage-header {
         font-weight: bold;
-        margin-top: 20px;
+        margin-top: 30px;
+        margin-bottom: 10px;
         font-size: 1.2em;
         color: #333;
-    }
-    body{
-        background: linear-gradient(135deg, lightskyblue, papayawhip);
+        border-bottom: 2px solid lightskyblue;
+        padding-bottom: 5px;
     }
 </style>
 <body>
 
 <div class="container">
     <div class="todo-app">
-        <h2>To-Do List <img th:src="@{images/todo.png}"></h2>
+        <h2>To-Do List <img th:src="@{images/todo.jpg}" alt=""></h2>
+
+        <div class="add-task-container">
+            <input type="text" id="input-box" placeholder="Wpisz własne zadanie...">
+            <select id="category-select" title="Wybierz etap"></select>
+            <button class="add-btn" onclick="addTask()">Dodaj</button>
+        </div>
+
         <ul id="list-container">
             <div class="stage-header">Etap 1</div>
             <li>Wybrać termin wesela i rodzaj ślubu</li>
@@ -75,6 +184,7 @@
             <li>Określić budżet weselny</li>
             <li>Wybrać salę weselną i zarezerwować termin</li>
             <li>Wybrać miejsce na poprawiny</li>
+
             <div class="stage-header">Etap 2</div>
             <li>Szukanie sukni ślubnej</li>
             <li>Zarezerwować datę i godzinę ślubu w kościele</li>
@@ -86,6 +196,7 @@
             <li>Kupić buty dla panny młodej</li>
             <li>Kupić bieliznę ślubną</li>
             <li>Kupić garnitur ślubny</li>
+
             <div class="stage-header">Etap 3</div>
             <li>Kupić obrączki ślubne</li>
             <li>Określić ostateczną liczbę gości</li>
@@ -94,6 +205,7 @@
             <li>Zarezrwować termin u makijażystki</li>
             <li>Zarezerwować termin u fryzjerki</li>
             <li>Umówić się na sesję narzeczeńską</li>
+
             <div class="stage-header">Etap 4</div>
             <li>Rozdać zaproszenia ślubne</li>
             <li>Ustalić listę utworów weselnych</li>
@@ -112,6 +224,7 @@
             <li>Wybrać sukienkę na poprawiny</li>
             <li>Wybrać dekorację samochodu do ślubu</li>
             <li>Zaplanować błogosławieństwo pary młodej</li>
+
             <div class="stage-header">Etap 5</div>
             <li>Zarezerwować transport dla gości weselnych</li>
             <li>Ustalić ile gości potrzebuje noclegu i zarezerwować pokoje</li>
@@ -121,16 +234,17 @@
             <li>Wybrać podziękowania dla rodziców</li>
             <li>Wybrać podziękowania dla gości weselnych</li>
             <li>Ustalić przebieg dnia ślubu</li>
-            <li>Zaplanować błogosławieństwo pary młodej</li>
+
             <div class="stage-header">Dzień Ślubu</div>
             <li>Odebrać bukiet ślubny</li>
             <li>Odebrać samochód do ślubu</li>
             <li>Zabrać obrączki ślubne</li>
             <li>Ustalić kto będzie odpowiedzialny za prezenty od gości</li>
+
             <div class="stage-header">Po ślubie</div>
             <li>Uregulować kwestie finansowe z usługodawcami</li>
             <li>14 dni po ślubie można odebrać skrócony akt małżeństwa</li>
-            <li>14 dni po ślubie można odebrać skrócony akt małżeństwa</li>
+
             <div class="stage-header">Potrzebne dokumenty</div>
             <li>Dowody osobiste narzeczonych</li>
             <li>Dowody osobiste świadków</li>
@@ -140,62 +254,134 @@
             <li>Potwierdzenie odbycia nauk przedmałżeńskich</li>
             <li>Zaświadczenia o odbyciu spowiedzi</li>
             <li>Zaświadczenie z Urzędu Stanu Cywilnego o braku okoliczności wykluczających zawarcie związku małżeńskiego</li>
-
-
-
-
         </ul>
-
-
-
     </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>
 <script>
-
     const listContainer = document.getElementById("list-container");
+    const inputBox = document.getElementById("input-box");
+    const categorySelect = document.getElementById("category-select");
 
+    // 1. Funkcja wypełniająca listę rozwijaną kategoriami (Etapami)
+    function populateCategories() {
+        categorySelect.innerHTML = ""; // Wyczyść stare
+        const headers = listContainer.querySelectorAll(".stage-header");
 
-    const saveTaskState = () => {
-        const tasks = [];
-        listContainer.querySelectorAll("li").forEach((item, index) => {
-            tasks.push({
-                id: index,
-                text: item.textContent,
-                checked: item.classList.contains("checked"),
-            });
+        headers.forEach(header => {
+            let option = document.createElement("option");
+            option.value = header.innerText;
+            option.innerText = header.innerText;
+            categorySelect.appendChild(option);
         });
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    };
+    }
 
+    // 2. Dodawanie nowego zadania
+    function addTask() {
+        if (inputBox.value === '') {
+            alert("Wpisz treść zadania!");
+            return;
+        }
 
-    const loadTaskState = () => {
-        const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        const liElements = listContainer.querySelectorAll("li");
-        savedTasks.forEach((task, index) => {
-            if (liElements[index] && task.checked) {
-                liElements[index].classList.add("checked");
+        const taskText = inputBox.value;
+        const selectedCategory = categorySelect.value;
+
+        // Stwórz element LI
+        let li = document.createElement("li");
+        li.innerText = taskText;
+
+        // Dodaj przycisk usuwania
+        let span = document.createElement("span");
+        span.innerHTML = "\u00d7";
+        span.className = "close-btn";
+        li.appendChild(span);
+
+        // Znajdź gdzie wstawić (po wybranym nagłówku, ale przed następnym)
+        const allElements = Array.from(listContainer.children);
+        let insertIndex = -1;
+
+        // Znajdź indeks wybranego nagłówka
+        const headerIndex = allElements.findIndex(el =>
+            el.classList.contains("stage-header") && el.innerText === selectedCategory
+        );
+
+        if (headerIndex !== -1) {
+            // Szukamy następnego nagłówka po wybranym
+            let nextHeaderIndex = -1;
+            for(let i = headerIndex + 1; i < allElements.length; i++) {
+                if(allElements[i].classList.contains("stage-header")) {
+                    nextHeaderIndex = i;
+                    break;
+                }
             }
-        });
-    };
 
+            if (nextHeaderIndex !== -1) {
+                // Wstaw przed następnym nagłówkiem
+                listContainer.insertBefore(li, allElements[nextHeaderIndex]);
+            } else {
+                // Nie ma następnego nagłówka -> wstaw na sam koniec listy
+                listContainer.appendChild(li);
+            }
+        } else {
+            // Zabezpieczenie: wstaw na koniec jeśli coś poszło nie tak
+            listContainer.appendChild(li);
+        }
 
-    const initializeTaskEvents = () => {
-        listContainer.querySelectorAll("li").forEach(item => {
-            item.addEventListener("click", () => {
-                item.classList.toggle("checked");
-                saveTaskState();
+        inputBox.value = "";
+        saveData();
+    }
+
+    // 3. Obsługa kliknięć (Zaznaczanie i Usuwanie)
+    listContainer.addEventListener("click", function(e) {
+        // Kliknięcie w LI
+        if (e.target.tagName === "LI") {
+            e.target.classList.toggle("checked");
+            saveData();
+        }
+        // Kliknięcie w X
+        else if (e.target.tagName === "SPAN" && e.target.classList.contains("close-btn")) {
+            e.target.parentElement.remove();
+            saveData();
+        }
+    }, false);
+
+    // 4. Zapisywanie stanu (Cały HTML)
+    function saveData() {
+        localStorage.setItem("weddingData_custom", listContainer.innerHTML);
+    }
+
+    // 5. Wczytywanie stanu
+    function loadData() {
+        const data = localStorage.getItem("weddingData_custom");
+        if (data) {
+            listContainer.innerHTML = data;
+        } else {
+            // Pierwsze uruchomienie: dodaj przyciski usuwania do istniejących zadań
+            const existingLis = listContainer.querySelectorAll("li");
+            existingLis.forEach(li => {
+                if (!li.querySelector(".close-btn")) {
+                    let span = document.createElement("span");
+                    span.innerHTML = "\u00d7";
+                    span.className = "close-btn";
+                    li.appendChild(span);
+                }
             });
-        });
-    };
+        }
+        // Zawsze odśwież listę kategorii po załadowaniu danych
+        populateCategories();
+    }
 
+    // Obsługa Enter w polu tekstowym
+    inputBox.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            addTask();
+        }
+    });
 
-    loadTaskState();
+    // Start
+    loadData();
 
-
-    initializeTaskEvents();
 </script>
 
 </body>
