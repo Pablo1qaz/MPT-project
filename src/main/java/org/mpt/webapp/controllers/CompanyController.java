@@ -46,6 +46,7 @@ public class CompanyController {
     public String companyList(Model model, @PathVariable("type") String type) {
         var companies = repo.findByCompanyTypeType(type);
         model.addAttribute("companies", companies);
+
         return "company_list";
     }
 
@@ -72,6 +73,14 @@ public class CompanyController {
             result.addError(
                     new FieldError("company", "contactPhone"
                             ,"Phone Number is incorrect. Correct format +48")
+            );
+        }
+
+        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+
+        if (!company.getContactEmail().matches(emailPattern)) {
+            result.addError(
+                    new FieldError("company", "contactEmail", "Incorrect email format (missing @ or domain)")
             );
         }
 

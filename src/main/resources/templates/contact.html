@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kontakt - Zespół</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+
+    <style>
+        /* RESET I STYLE OGÓLNE */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        /* PASEK NAWIGACJI (MENU) */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #16a085;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar .nav-links li {
+            margin-left: 30px;
+        }
+
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: #576574;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-links a:hover,
+        .navbar .nav-links a.active {
+            color: #1dd1a1;
+        }
+
+        /* KONTENER GŁÓWNY (Flexbox dla wielu kart) */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, floralwhite, white);
+            padding: 100px 20px 40px 20px; /* Padding góry (100px) uwzględnia pasek menu */
+            box-sizing: border-box;
+
+            /* Ustawienie kart obok siebie */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px; /* Odstęp między kartami */
+        }
+
+        /* KARTA WIZYTÓWKI */
+        .card {
+            position: relative;
+            height: 460px;
+            width: 350px;
+            background-color: #ecf0f1;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            /* Brak marginu globalnego, gap w kontenerze załatwia sprawę */
+        }
+
+        .header {
+            position: absolute;
+            height: 220px;
+            left: 0;
+            right: 0;
+            top: 0;
+            background-image: linear-gradient(to right, #1dd1a1, #1abc9c);
+        }
+
+        .header img {
+            position: absolute;
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            left: 115px; /* Wyśrodkowanie (350 - 120) / 2 */
+            top: 22px;
+            border: 4px solid white;
+            object-fit: cover;
+        }
+
+        .header h3 {
+            position: absolute;
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            top: 150px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            margin: 0;
+        }
+
+        .header p {
+            position: absolute;
+            color: rgb(236, 233, 233);
+            font-size: 13px;
+            top: 185px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            margin: 0;
+        }
+
+        .body {
+            position: absolute;
+            height: 126px;
+            left: 5px;
+            right: 5px;
+            top: 52%;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .body ul {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            top: 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .body ul li {
+            position: absolute;
+            list-style: none;
+            display: block;
+            height: 40px;
+            width: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            transition: all .3s ease-in-out;
+        }
+
+        /* Selektory szczegółowe, aby nie psuć stopki */
+        .body ul li h3 {
+            position: absolute;
+            top: 25px;
+            left: 58px;
+            color: #576574;
+            font-size: 16px;
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        .body ul li p {
+            position: absolute;
+            top: 14px;
+            left: 59px;
+            font-size: 12px;
+            font-family: sans-serif;
+            color: #576574;
+            margin: 0;
+        }
+
+        .body ul li i {
+            position: absolute;
+            left: 12px;
+            top: 7px;
+            color: #16a085;
+            font-size: 26px;
+        }
+
+        .body ul li:nth-child(1) { top: 10px; }
+        .body ul li:nth-child(2) { top: 55px; }
+
+        .body li:hover {
+            background-color: whitesmoke;
+            cursor: pointer;
+        }
+
+        /* STOPKA Z IKONAMI */
+        .footer {
+            position: absolute;
+            height: 80px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-image: linear-gradient(to right, #e2e1e1, #ecf0f1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer ul {
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .footer ul li {
+            list-style: none;
+            margin: 0 15px;
+        }
+
+        .footer ul li i {
+            font-size: 30px;
+            color: #7f8c8d;
+            transition: all .3s ease-in;
+        }
+
+        .footer ul li:hover i {
+            transform: scale(0.9);
+            color: #1dd1a1;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">Wedding Class</div>
+    <ul class="nav-links">
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/guests}">Guests</a></li> <li><a th:href="@{/contact}" class="active">Contact</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <div class="card" th:each="person : ${people}">
+
+        <div class="header">
+            <img th:src="@{/images/profilowe.jpg}"
+                 src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                 alt="Profile Pic">
+
+            <h3 th:text="${person.name}">Imię Nazwisko</h3>
+            <p th:text="${person.role}">Stanowisko</p>
+        </div>
+
+        <div class="body">
+            <ul>
+                <li>
+                    <a th:href="'tel:' + ${person.phone}" style="text-decoration: none; color: inherit;">
+                        <h3 th:text="${person.phone}">+48 123 456 789</h3>
+                        <p>Mobile number</p>
+                        <i class="fas fa-mobile-alt"></i>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="'mailto:' + ${person.email}" style="text-decoration: none; color: inherit;">
+                        <h3 style="font-size: 13px;" th:text="${person.email}">email@example.com</h3>
+                        <p>Email address</p>
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <ul>
+                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
