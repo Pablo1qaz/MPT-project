@@ -1,245 +1,373 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Wedding with Class</title>
+    <title>Wedding with Class - Planer Stołów</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background: linear-gradient(100deg, lightskyblue, papayawhip);
+        background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
         color: #333;
+        min-height: 100vh;
     }
 
     .container {
-        max-width: 800px;
+        max-width: 900px;
         margin: 30px auto;
-        padding: 20px;
+        padding: 25px;
         background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
     h2{
         text-align: center;
-        color: black;
-        margin-bottom: 20px;
+        color: #444;
+        margin-bottom: 30px;
+        font-weight: 700;
     }
 
     .table-container {
         margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .table-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        padding: 15px;
+        width: 100%;
+        max-width: 350px; /* Ograniczenie szerokości pojedynczego stołu */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: transform 0.2s;
+    }
+
+    .table-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
     }
 
     .table-header {
-        font-size: 1.3em;
+        font-size: 1.2em;
         font-weight: bold;
-        margin-bottom: 10px;
-        color: black;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #e9ecef;
+        padding-bottom: 10px;
+    }
+
+    /* Styl licznika miejsc */
+    .capacity-badge {
+        font-size: 0.8em;
+        padding: 4px 8px;
+        border-radius: 12px;
+        background-color: #e9ecef;
+        color: #495057;
+    }
+    .capacity-full {
+        background-color: #ffcccc;
+        color: #a00;
     }
 
     .person-list {
         list-style-type: none;
         padding: 0;
         margin: 0;
+        min-height: 50px;
     }
 
     .person-list li {
-        padding: 8px;
-        margin: 4px 0;
+        padding: 8px 12px;
+        margin: 6px 0;
         background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease;
-    }
-
-    .person-list li:hover {
-        background-color: #f1f1f1;
+        font-size: 0.95em;
     }
 
     #controls {
-        background-color: #eef3fc;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        border: 1px solid #e1e4e8;
     }
     #controls h3{
-        margin: 0 0 10px;
-        color: black;
+        margin: 15px 0 10px;
+        color: #555;
+        font-size: 1.1em;
+    }
+    #controls h3:first-child {
+        margin-top: 0;
+    }
+
+    .input-group-custom {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
     }
 
     #controls input, #controls select {
-        width: calc(100% - 20px);
-        margin-bottom: 10px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
         font-size: 14px;
+        flex-grow: 1;
+    }
+
+    /* Input na liczbę osób */
+    #table-limit {
+        max-width: 100px;
     }
 
     #controls button {
-        width: 48%;
-        margin: 5px 1%;
-        padding: 10px;
+        padding: 10px 20px;
         border: none;
-        border-radius: 5px;
-        background-color: #ff5945;
+        border-radius: 6px;
+        background-color: #4a90e2;
         color: white;
-        font-size: 14px;
+        font-weight: 600;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.2s;
+        width: 100%;
     }
     #controls button:hover{
-        background-color: #1d5bbf;
+        background-color: #357abd;
     }
 
-    .table {
-        background: #eef3fc;
-        border: 2px solid #2a71d0;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        padding: 10px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    }
-    .person-list li button{
-        padding: 5px;
-        border: none;
-        border-radius: 5px;
-        background-color: #e74c3c;
+    .remove-table-btn {
+        background-color: #dc3545;
         color: white;
-        font-size: 12px;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .person-list li button {
+        padding: 4px 8px;
+        border: none;
+        border-radius: 4px;
+        background-color: #ff6b6b;
+        color: white;
+        font-size: 11px;
+        cursor: pointer;
+        margin-left: 10px;
     }
     .person-list li button:hover {
-        background-color: #c0392b;
+        background-color: #fa5252;
     }
-    @media (max-width: 600px) {
-        #controls button {
-            width: 100%;
-        }
 
-        #controls input, #controls select {
-            width: 100%;
+    @media (max-width: 600px) {
+        .input-group-custom {
+            flex-direction: column;
+        }
+        #table-limit {
+            max-width: 100%;
         }
     }
 </style>
 <body>
 
 <div class="container">
-    <h2>Table List - Tables and Guests</h2>
+    <h2>Planer Weselny - Stoły i Goście</h2>
 
     <div id="controls">
-        <h3>Add new table:</h3>
-        <input type="text" id="table-name" placeholder="Table name">
-        <button id="add-table">Add Table</button>
+        <h3>Dodaj nowy stół:</h3>
+        <div class="input-group-custom">
+            <input type="text" id="table-name" placeholder="Nazwa stołu">
+            <input type="number" id="table-limit" placeholder="Limit miejsc" min="1" value="8">
+        </div>
+        <button id="add-table">Dodaj Stół</button>
 
-        <h3>Add person to the table:</h3>
-        <input type="text" id="person-name" placeholder="Name and Surname">
-        <select id="table-select">
-            <option value="" disabled selected>Choose table</option>
-        </select>
-        <button id="add-person">Add Person</button>
+        <h3>Dodaj osobę do stołu:</h3>
+        <div class="input-group-custom">
+            <input type="text" id="person-name" placeholder="Imię i Nazwisko">
+            <select id="table-select">
+                <option value="" disabled selected>Wybierz stół</option>
+            </select>
+        </div>
+        <button id="add-person">Dodaj Osobę</button>
     </div>
 
     <div class="table-container" id="table-container">
-
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-
     const tableContainer = document.getElementById('table-container');
     const tableSelect = document.getElementById('table-select');
     const addTableButton = document.getElementById('add-table');
     const addPersonButton = document.getElementById('add-person');
 
+    // Funkcja odświeżająca nagłówek (licznik osób)
+    const updateTableCount = (tableDiv, currentCount, limit) => {
+        const headerText = tableDiv.querySelector('.table-name-text');
+        const badge = tableDiv.querySelector('.capacity-badge');
+
+        badge.textContent = `${currentCount} / ${limit}`;
+
+        if (currentCount >= limit) {
+            badge.classList.add('capacity-full');
+        } else {
+            badge.classList.remove('capacity-full');
+        }
+    };
+
     const loadFromLocalStorage = () => {
-        const data = JSON.parse(localStorage.getItem('tableData')) || {};
-        for (const [tableName, guests] of Object.entries(data)) {
-            createTable(tableName, guests);
+        const rawData = localStorage.getItem('tableData_v2'); // Zmienilem klucz na v2 aby uniknac konfliktow ze starym formatem
+        const data = JSON.parse(rawData) || {};
+
+        for (const [tableName, tableInfo] of Object.entries(data)) {
+            // Obsługa kompatybilności wstecznej lub nowego formatu obiektu
+            const limit = tableInfo.limit || 10;
+            const guests = tableInfo.guests || [];
+            createTable(tableName, limit, guests);
         }
     };
 
     const saveToLocalStorage = () => {
         const data = {};
-        document.querySelectorAll('.table').forEach(table => {
+        document.querySelectorAll('.table-card').forEach(table => {
             const tableName = table.getAttribute('data-table-name');
-            const guests = Array.from(table.querySelectorAll('.person-list li')).map(li => li.textContent.replace('Usuń', '').trim());
-            data[tableName] = guests;
+            const limit = parseInt(table.getAttribute('data-table-limit'));
+
+            // Pobieranie nazw gości, usuwając tekst przycisku "Usuń"
+            const guests = Array.from(table.querySelectorAll('.person-list li'))
+                .map(li => li.childNodes[0].textContent.trim());
+
+            data[tableName] = {
+                limit: limit,
+                guests: guests
+            };
         });
-        localStorage.setItem('tableData', JSON.stringify(data));
+        localStorage.setItem('tableData_v2', JSON.stringify(data));
     };
 
-    const createTable = (tableName, guests = []) => {
+    const createTable = (tableName, limit, guests = []) => {
         const tableDiv = document.createElement('div');
-        tableDiv.className = 'table';
+        tableDiv.className = 'table-card';
         tableDiv.setAttribute('data-table-name', tableName);
+        tableDiv.setAttribute('data-table-limit', limit);
 
+        // Header Structure
         const tableHeader = document.createElement('div');
         tableHeader.className = 'table-header';
-        tableHeader.textContent = `Table: ${tableName}`;
 
-        const removeTableButton = document.createElement('button');
-        removeTableButton.className = 'remove-table-btn';
-        removeTableButton.textContent = 'Remove';
-        removeTableButton.addEventListener('click', () => {
-            tableDiv.remove();
-            const optionToRemove = Array.from(tableSelect.options).find(option => option.value === tableName);
-            if (optionToRemove) optionToRemove.remove();
-            saveToLocalStorage();
-        });
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'table-name-text';
+        nameSpan.textContent = tableName;
 
+        const capacityBadge = document.createElement('span');
+        capacityBadge.className = 'capacity-badge';
+        // Tekst badge zostanie ustawiony przez updateTableCount na końcu
+
+        tableHeader.appendChild(nameSpan);
+        tableHeader.appendChild(capacityBadge);
 
         const personList = document.createElement('ul');
         personList.className = 'person-list';
 
-        guests.forEach(guest => {
-            const personItem = document.createElement('li');
-            personItem.textContent = guest;
-            const removeButton = document.createElement('button');
-            removeButton.textContent = 'Remove';
-            removeButton.addEventListener('click', () => {
-                personItem.remove();
+        // Add remove table button
+        const removeTableButton = document.createElement('button');
+        removeTableButton.className = 'remove-table-btn';
+        removeTableButton.textContent = 'Usuń stół';
+        removeTableButton.addEventListener('click', () => {
+            if(confirm(`Czy na pewno usunąć stół "${tableName}"?`)) {
+                tableDiv.remove();
+                const optionToRemove = Array.from(tableSelect.options).find(option => option.value === tableName);
+                if (optionToRemove) optionToRemove.remove();
                 saveToLocalStorage();
-            });
-            personItem.appendChild(removeButton);
+            }
+        });
+
+        // Add existing guests
+        guests.forEach(guestName => {
+            const personItem = createGuestElement(guestName, tableDiv, limit);
             personList.appendChild(personItem);
         });
 
         tableDiv.appendChild(tableHeader);
-        tableDiv.appendChild(removeTableButton);
         tableDiv.appendChild(personList);
+        tableDiv.appendChild(removeTableButton);
         tableContainer.appendChild(tableDiv);
 
+        // Add to select dropdown
         const tableOption = document.createElement('option');
         tableOption.value = tableName;
-        tableOption.textContent = tableName;
+        tableOption.textContent = `${tableName} (max ${limit})`;
         tableSelect.appendChild(tableOption);
 
+        // Initial counter update
+        updateTableCount(tableDiv, guests.length, limit);
         saveToLocalStorage();
     };
 
+    // Helper function to create guest list item
+    const createGuestElement = (name, tableDiv, limit) => {
+        const personItem = document.createElement('li');
+        personItem.textContent = name; // Bezpieczne wstawianie tekstu
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'X';
+        removeButton.title = "Usuń osobę";
+        removeButton.addEventListener('click', () => {
+            personItem.remove();
+            const currentCount = tableDiv.querySelectorAll('.person-list li').length;
+            updateTableCount(tableDiv, currentCount, limit);
+            saveToLocalStorage();
+        });
+
+        personItem.appendChild(removeButton);
+        return personItem;
+    };
 
     addTableButton.addEventListener('click', () => {
         const tableNameInput = document.getElementById('table-name');
-        const tableName = tableNameInput.value.trim();
+        const tableLimitInput = document.getElementById('table-limit');
 
-        if (tableName) {
-            createTable(tableName);
-            tableNameInput.value = '';
-        } else {
-            alert('Enter table name!');
+        const tableName = tableNameInput.value.trim();
+        const limit = parseInt(tableLimitInput.value);
+
+        if (!tableName) {
+            alert('Podaj nazwę stołu!');
+            return;
         }
+
+        if (isNaN(limit) || limit < 1) {
+            alert('Limit musi być liczbą większą od 0!');
+            return;
+        }
+
+        // Sprawdź czy stół o takiej nazwie już istnieje
+        const exists = document.querySelector(`[data-table-name="${tableName}"]`);
+        if (exists) {
+            alert('Stół o takiej nazwie już istnieje!');
+            return;
+        }
+
+        createTable(tableName, limit);
+        tableNameInput.value = '';
+        tableLimitInput.value = '8'; // reset do domyślnej
     });
 
     addPersonButton.addEventListener('click', () => {
@@ -247,31 +375,32 @@
         const selectedTableName = tableSelect.value;
         const personName = personNameInput.value.trim();
 
-        if (personName && selectedTableName) {
-            const tableDiv = document.querySelector(`[data-table-name="${selectedTableName}"]`);
-            const personList = tableDiv.querySelector('.person-list');
-
-            const personItem = document.createElement('li');
-            personItem.textContent = personName;
-
-            personList.appendChild(personItem);
-
-            const removeButton = document.createElement('button');
-            removeButton.textContent = 'Usuń';
-            removeButton.addEventListener('click', () => {
-                personItem.remove();
-                saveToLocalStorage();
-            });
-
-            personItem.appendChild(removeButton);
-            personList.appendChild(personItem);
-
-            personNameInput.value = '';
-            saveToLocalStorage();
-        } else {
-            alert('Enter name and surname amd choose the table!');
+        if (!personName || !selectedTableName) {
+            alert('Wpisz imię i nazwisko oraz wybierz stół!');
+            return;
         }
+
+        const tableDiv = document.querySelector(`[data-table-name="${selectedTableName}"]`);
+        const personList = tableDiv.querySelector('.person-list');
+        const limit = parseInt(tableDiv.getAttribute('data-table-limit'));
+        const currentCount = personList.children.length;
+
+        // WALIDACJA LIMITU
+        if (currentCount >= limit) {
+            alert(`Stół "${selectedTableName}" jest pełny! Limit to ${limit} osób.`);
+            return;
+        }
+
+        const personItem = createGuestElement(personName, tableDiv, limit);
+        personList.appendChild(personItem);
+
+        updateTableCount(tableDiv, currentCount + 1, limit);
+
+        personNameInput.value = '';
+        saveToLocalStorage();
+        personNameInput.focus();
     });
+
     loadFromLocalStorage();
 </script>
 </body>
