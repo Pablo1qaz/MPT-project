@@ -28,6 +28,7 @@ public class NewUsersService implements UserDetailsService {
             return springUser;
 
         }
+
         return null;
     }
 }
