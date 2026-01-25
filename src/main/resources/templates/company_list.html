@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Firm</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <style>
@@ -27,6 +26,31 @@
         margin-bottom: 20px;
         color: #333;
     }
+
+    /* --- NOWE STYLE DLA WYSZUKIWARKI --- */
+    .search-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+
+    #search-input {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px 20px;
+        border: 1px solid #ddd;
+        border-radius: 25px; /* Zaokrąglone rogi */
+        font-size: 16px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        outline: none;
+        transition: box-shadow 0.3s ease;
+    }
+
+    #search-input:focus {
+        box-shadow: 0 4px 10px rgba(125, 42, 232, 0.2); /* Fioletowa poświata pasująca do przycisków */
+        border-color: #7d2ae8;
+    }
+    /* ----------------------------------- */
 
     .card {
         display: flex;
@@ -80,24 +104,76 @@
     .card-button:hover {
         background-color: #5a1bb8;
     }
+
+    /* Styl dla komunikatu "Brak wyników" */
+    #no-results {
+        text-align: center;
+        color: #777;
+        font-size: 18px;
+        display: none; /* Domyślnie ukryty */
+        margin-top: 20px;
+    }
 </style>
 
 <body>
 <div class="container">
     <h1>Lista Firm</h1>
-    <div class="card" th:each="company : ${companies}">
-        <div class="card-content">
-            <span class="card-title" th:text="${company.name}"></span>
-            <span th:text="${company.contactEmail}"></span>
-            <span th:text="${company.contactPhone}"></span>
-            <span th:text="${company.address}"></span>
-        </div>
-        <div class="card-footer">
-            <a th:href="${company.website}" target="_blank" class="card-button">Zobacz Ofertę</a>
+
+    <div class="search-wrapper">
+        <input type="text" id="search-input" placeholder="Wyszukaj firmę po nazwie...">
+    </div>
+
+    <div id="companies-list">
+        <div class="card" th:each="company : ${companies}">
+            <div class="card-content">
+                <span class="card-title company-name" th:text="${company.name}"></span>
+
+                <span th:text="${company.contactEmail}"></span>
+                <span th:text="${company.contactPhone}"></span>
+                <span th:text="${company.address}"></span>
+            </div>
+            <div class="card-footer">
+                <a th:href="${company.website}" target="_blank" class="card-button">Zobacz Ofertę</a>
+            </div>
         </div>
     </div>
+
+    <div id="no-results">Nie znaleziono firmy o takiej nazwie.</div>
+
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById('search-input');
+        const cards = document.querySelectorAll('.card');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('keyup', function(event) {
+            const query = event.target.value.toLowerCase();
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                // Pobieramy nazwę firmy z konkretnej karty
+                const title = card.querySelector('.company-name').textContent.toLowerCase();
+
+                // Sprawdzamy czy wpisany tekst znajduje się w nazwie
+                if (title.includes(query)) {
+                    card.style.display = ""; // Pokaż (domyślny styl, zazwyczaj flex/block)
+                    visibleCount++;
+                } else {
+                    card.style.display = "none"; // Ukryj
+                }
+            });
+
+            // Obsługa komunikatu "Brak wyników"
+            if (visibleCount === 0) {
+                noResultsMsg.style.display = "block";
+            } else {
+                noResultsMsg.style.display = "none";
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
